@@ -1,6 +1,6 @@
 # vue-typespeed
 
-> A Vue.js project
+> A typespeed game made with Vue.
 
 ## Build Setup
 
