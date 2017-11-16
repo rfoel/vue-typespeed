@@ -17,14 +17,26 @@ export default {
 			width: 800,
 			height: 500,
 			input: "",
-			dict: ["rafael", "vue", "franco", "typespeed", "github", "topper"],
+			dict: [],
 			words: []
 		}
 	},
+	mounted() {
+		fetch("http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=5&maxLength=10&limit=100&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5").then(data => {
+			return data.json()
+		}).then(data => {
+			this.dict = data.map(word => {
+				return word.word
+			})
+			console.log(this.dict)
+		})
+	},
 	methods: {
 		start() {
-			let word = this.generateWord()
-			this.words.push({ text: word, createdAt: Date.now(), x: -word.length * 15, y: this.getY(), hit: false })
+			setInterval(() => {
+				let word = this.generateWord()
+				this.words.push({ text: word, createdAt: Date.now(), x: -word.length * 15, y: this.getY(), hit: false })
+			}, 2000)
 		},
 		keyup(event) {
 			let input = this.input.trim()
@@ -46,7 +58,7 @@ export default {
 				clearInterval(word.intervalId)
 				word.hitAt = Date.now()
 				word.hit = true
-				this.score += 1				
+				this.score += 1
 			} else {
 				this.score -= 1
 			}
